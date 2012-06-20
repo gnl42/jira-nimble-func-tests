@@ -1,0 +1,9 @@
+# Idea files #
+##############
+.idea
+jira-func-tests4.iml
+jira-nimble-func-tests.iml
+
+# Build directories #
+#####################
+target
