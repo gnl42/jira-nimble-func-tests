@@ -29,6 +29,7 @@ public class JUnit4AnnotationsTest extends NimbleFuncTestCase {
 	public void emptyTest() {
 	}
 
+	@SuppressWarnings("unused")
 	public void notTest() {
 		Assert.fail("This function is not a test, shouldn't be executed");
 	}
