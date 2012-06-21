@@ -10,7 +10,7 @@
 
 	<groupId>com.atlassian.jira</groupId>
 	<artifactId>jira-nimble-func-tests</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>JIRA Nimble Functional Tests</name>
@@ -30,8 +30,8 @@
 	</organization>
 
 	<scm>
-		<connection>scm:git:git@bitbucket.org/atlassian/jira-nimble-func-tests</connection>
-		<developerConnection>scm:git:git@bitbucket.org/atlassian/jira-nimble-func-tests</developerConnection>
+		<connection>scm:git:ssh://git@bitbucket.org/atlassian/jira-nimble-func-tests</connection>
+		<developerConnection>scm:git:ssh://git@bitbucket.org/atlassian/jira-nimble-func-tests</developerConnection>
 		<url>http://bitbucket.org/atlassian/jira-nimble-func-tests</url>
 	</scm>
 
