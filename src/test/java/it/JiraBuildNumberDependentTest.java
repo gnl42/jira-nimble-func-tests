@@ -47,7 +47,7 @@ public class JiraBuildNumberDependentTest extends NimbleFuncTestCase {
 
 	@JiraBuildNumberDependent(BN_JIRA_5)
 	@Test
-	public void testOnlyForJira50OrNewerName() throws Exception {
+	public void testOnlyForJira50OrNewer() throws Exception {
 		if (administration.getBuildNumber() < BN_JIRA_5) {
 			Assert.fail("Build number is less than expected!");
 		}
@@ -55,7 +55,7 @@ public class JiraBuildNumberDependentTest extends NimbleFuncTestCase {
 
 	@JiraBuildNumberDependent(BN_JIRA_4_3)
 	@Test
-	public void testOnlyForJira43OrNewerName() throws Exception {
+	public void testOnlyForJira43OrNewer() throws Exception {
 		if (administration.getBuildNumber() < BN_JIRA_4_3) {
 			Assert.fail("Build number is less than expected!");
 		}
@@ -63,7 +63,7 @@ public class JiraBuildNumberDependentTest extends NimbleFuncTestCase {
 
 	@JiraBuildNumberDependent(value = BN_JIRA_4_4, condition = LongCondition.LESS_OR_EQUAL)
 	@Test
-	public void testOnlyForJira44OrOlderName() throws Exception {
+	public void testOnlyForJira44OrOlder() throws Exception {
 		if (administration.getBuildNumber() > BN_JIRA_4_4) {
 			Assert.fail("Build number is greather than expected!");
 		}
