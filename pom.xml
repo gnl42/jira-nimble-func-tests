@@ -35,6 +35,11 @@
 		<url>http://bitbucket.org/atlassian/jira-nimble-func-tests</url>
 	</scm>
 
+	<issueManagement>
+		<system>bitbucket</system>
+		<url>https://bitbucket.org/atlassian/jira-nimble-func-tests/issues</url>
+	</issueManagement>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jira.version>4.2</jira.version>
