@@ -21,13 +21,14 @@ import com.atlassian.jira.webtests.ztests.bundledplugins2.rest.client.IssueClien
 import org.junit.Assert;
 import org.junit.Test;
 
+import static com.atlassian.jira.nimblefunctests.IntegrationTestUtils.getComments;
 
 /**
  * Testing if JIRA data is restored only once if @RestoreOnce is used.
  */
 @RestoreOnce("jira-dump1.xml")
 public class RestoreOnceTest extends NimbleFuncTestCase {
-	
+
 	private static int executedTests = 0;
 
 	@Test
@@ -48,7 +49,7 @@ public class RestoreOnceTest extends NimbleFuncTestCase {
 	private void testImpl() {
 		// check if there is exactly same comments count as already executed test count
 		IssueClient ic = new IssueClient(environmentData);
-		int commentsLength = ic.get("FTC-1").fields.comment.value.size();
+		int commentsLength = getComments(ic.get("FTC-1").fields).size();
 		Assert.assertEquals(executedTests, commentsLength);
 
 		// add new comment
@@ -56,7 +57,7 @@ public class RestoreOnceTest extends NimbleFuncTestCase {
 		executedTests++;
 
 		// check if successfully added new comment
-		int commentsLengthAfterAdd = ic.get("FTC-1").fields.comment.value.size();
+		int commentsLengthAfterAdd = getComments(ic.get("FTC-1").fields).size();
 		Assert.assertEquals(executedTests, commentsLengthAfterAdd);
 	}
 

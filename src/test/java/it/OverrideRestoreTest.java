@@ -22,6 +22,7 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static com.atlassian.jira.nimblefunctests.IntegrationTestUtils.getSummaryFieldValue;
 
 /**
  * Testing if overriding restore configuration works fine if there is @Restore on method
@@ -33,7 +34,7 @@ public class OverrideRestoreTest extends NimbleFuncTestCase {
 	@Test
 	public void getIssueTest() {
 		IssueClient ic = new IssueClient(environmentData);
-		Assert.assertEquals("My First Task", ic.get("FTC-1").fields.summary.value);
+		Assert.assertEquals("My First Task", getSummaryFieldValue(ic.get("FTC-1").fields));
 		try {
 			ic.get("FTC-1");
 		}
@@ -47,8 +48,8 @@ public class OverrideRestoreTest extends NimbleFuncTestCase {
 	@Test
 	public void getIssueWithOverrideRestoreTest() {
 		IssueClient ic = new IssueClient(environmentData);
-		Assert.assertEquals("My First Task", ic.get("FTC-1").fields.summary.value);
-		Assert.assertEquals("My Second Issue", ic.get("FTC-2").fields.summary.value);
+		Assert.assertEquals("My First Task", getSummaryFieldValue(ic.get("FTC-1").fields));
+		Assert.assertEquals("My Second Issue", getSummaryFieldValue(ic.get("FTC-2").fields));
 	}
 
 }

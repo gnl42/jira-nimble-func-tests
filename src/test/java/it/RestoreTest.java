@@ -21,6 +21,8 @@ import com.atlassian.jira.webtests.ztests.bundledplugins2.rest.client.IssueClien
 import org.junit.Assert;
 import org.junit.Test;
 
+import static com.atlassian.jira.nimblefunctests.IntegrationTestUtils.getComments;
+
 /**
  * Testing if JIRA data is restored each test execution when @Restore is used on class.
  */
@@ -45,14 +47,14 @@ public class RestoreTest extends NimbleFuncTestCase {
 	private void testImpl() {
 		// check if there is no comments
 		IssueClient ic = new IssueClient(environmentData);
-		int commentsLength = ic.get("FTC-1").fields.comment.value.size();
+		int commentsLength = getComments(ic.get("FTC-1").fields).size();
 		Assert.assertEquals(0, commentsLength);
 
 		// add new comment
 		navigation.issue().addComment("FTC-1", "Comment from test method: " + runningTestMethod.getMethodName());
 
 		// check if successfully added new comment
-		int commentsLengthAfterAdd = ic.get("FTC-1").fields.comment.value.size();
+		int commentsLengthAfterAdd = getComments(ic.get("FTC-1").fields).size();
 		Assert.assertEquals(1, commentsLengthAfterAdd);
 	}
 
