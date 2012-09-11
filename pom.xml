@@ -10,7 +10,7 @@
 
 	<groupId>com.atlassian.jira</groupId>
 	<artifactId>jira-nimble-func-tests</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.1.1-testkit-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>JIRA Nimble Functional Tests</name>
@@ -142,6 +142,12 @@
 			<artifactId>jira-func-tests</artifactId>
 			<version>${jira.test-lib.version}</version>
 		</dependency>
+        <dependency>
+			<groupId>com.atlassian.jira.tests</groupId>
+			<artifactId>jira-testkit-plugin</artifactId>
+			<version>5.2-m07</version>
+            <scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
@@ -191,9 +197,18 @@
 			<id>jira-5.1</id>
 			<activation><activeByDefault>false</activeByDefault></activation>
 			<properties>
-				<jira.version>5.1-rc3</jira.version>
-				<jira.data.version>5.1-rc3</jira.data.version>
-				<jira.test-lib.version>5.1-rc3</jira.test-lib.version>
+				<jira.version>5.1</jira.version>
+				<jira.data.version>5.1</jira.data.version>
+				<jira.test-lib.version>5.1</jira.test-lib.version>
+			</properties>
+		</profile>
+        <profile>
+			<id>jira-5.2</id>
+			<activation><activeByDefault>false</activeByDefault></activation>
+			<properties>
+				<jira.version>5.2-SNAPSHOT</jira.version>
+				<jira.data.version>${jira.version}</jira.data.version>
+				<jira.test-lib.version>${jira.version}</jira.test-lib.version>
 			</properties>
 		</profile>
 		<profile>

@@ -1,7 +1,7 @@
 package com.atlassian.jira.nimblefunctests;
 
-import com.atlassian.jira.webtests.ztests.bundledplugins2.rest.client.Comment;
-import com.atlassian.jira.webtests.ztests.bundledplugins2.rest.client.Issue;
+import com.atlassian.jira.testkit.client.restclient.Comment;
+import com.atlassian.jira.testkit.client.restclient.Issue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

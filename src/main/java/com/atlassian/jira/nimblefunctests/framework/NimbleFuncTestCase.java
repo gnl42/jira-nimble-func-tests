@@ -24,11 +24,11 @@ import com.atlassian.jira.functest.framework.Navigation;
 import com.atlassian.jira.functest.framework.Parser;
 import com.atlassian.jira.functest.framework.assertions.Assertions;
 import com.atlassian.jira.functest.framework.assertions.TextAssertions;
-import com.atlassian.jira.functest.framework.log.FuncTestLogger;
 import com.atlassian.jira.nimblefunctests.annotation.Annotations;
 import com.atlassian.jira.nimblefunctests.annotation.JiraBuildNumberDependent;
 import com.atlassian.jira.nimblefunctests.annotation.Restore;
 import com.atlassian.jira.nimblefunctests.annotation.RestoreOnce;
+//import com.atlassian.jira.testkit.client.log.FuncTestLogger;
 import com.atlassian.jira.webtests.util.JIRAEnvironmentData;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
@@ -63,7 +63,7 @@ public class NimbleFuncTestCase {
 	public Assertions assertions;
 	public TextAssertions text;
 	public Parser parse;
-	public FuncTestLogger log;
+	// public FuncTestLogger log;
 	public LocatorFactory locator;
 	public JIRAEnvironmentData environmentData;
 	// }
@@ -223,7 +223,7 @@ public class NimbleFuncTestCase {
 			ftc.assertions = this.assertions;
 			ftc.text = this.text;
 			ftc.parse = this.parse;
-			ftc.log = this.log;
+			//ftc.log = this.log;
 			ftc.locator = this.locator;
 		}
 

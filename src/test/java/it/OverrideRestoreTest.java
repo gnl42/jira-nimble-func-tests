@@ -17,7 +17,7 @@ package it;
 
 import com.atlassian.jira.nimblefunctests.annotation.Restore;
 import com.atlassian.jira.nimblefunctests.framework.NimbleFuncTestCase;
-import com.atlassian.jira.webtests.ztests.bundledplugins2.rest.client.IssueClient;
+import com.atlassian.jira.testkit.client.restclient.IssueClient;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import org.junit.Assert;
 import org.junit.Test;

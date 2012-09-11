@@ -17,7 +17,7 @@ package it;
 
 import com.atlassian.jira.nimblefunctests.annotation.RestoreOnce;
 import com.atlassian.jira.nimblefunctests.framework.NimbleFuncTestCase;
-import com.atlassian.jira.webtests.ztests.bundledplugins2.rest.client.IssueClient;
+import com.atlassian.jira.testkit.client.restclient.IssueClient;
 import org.junit.Assert;
 import org.junit.Test;
 
