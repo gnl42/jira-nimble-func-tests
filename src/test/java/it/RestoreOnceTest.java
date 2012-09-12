@@ -17,11 +17,18 @@ package it;
 
 import com.atlassian.jira.nimblefunctests.annotation.RestoreOnce;
 import com.atlassian.jira.nimblefunctests.framework.NimbleFuncTestCase;
-import com.atlassian.jira.webtests.ztests.bundledplugins2.rest.client.IssueClient;
+import com.atlassian.jira.rest.client.IssueRestClient;
+import com.atlassian.jira.rest.client.NullProgressMonitor;
+import com.atlassian.jira.rest.client.ProgressMonitor;
+import com.atlassian.jira.rest.client.auth.BasicHttpAuthenticationHandler;
+import com.atlassian.jira.rest.client.internal.jersey.JerseyJiraRestClient;
+import com.google.common.collect.Iterables;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static com.atlassian.jira.nimblefunctests.IntegrationTestUtils.getComments;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Testing if JIRA data is restored only once if @RestoreOnce is used.
@@ -30,6 +37,20 @@ import static com.atlassian.jira.nimblefunctests.IntegrationTestUtils.getComment
 public class RestoreOnceTest extends NimbleFuncTestCase {
 
 	private static int executedTests = 0;
+
+	private final ProgressMonitor pm = new NullProgressMonitor();
+	private JerseyJiraRestClient restClient;
+
+	@Override
+	public void beforeMethod() {
+		super.beforeMethod();
+		try {
+			final URI jiraUri = UriBuilder.fromUri(environmentData.getBaseUrl().toURI()).build();
+			restClient = new JerseyJiraRestClient(jiraUri, new BasicHttpAuthenticationHandler("admin", "admin"));
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	@Test
 	public void firstTest() {
@@ -48,8 +69,8 @@ public class RestoreOnceTest extends NimbleFuncTestCase {
 
 	private void testImpl() {
 		// check if there is exactly same comments count as already executed test count
-		IssueClient ic = new IssueClient(environmentData);
-		int commentsLength = getComments(ic.get("FTC-1").fields).size();
+		final IssueRestClient issueClient = restClient.getIssueClient();
+		final int commentsLength = Iterables.size(issueClient.getIssue("FTC-1", pm).getComments());
 		Assert.assertEquals(executedTests, commentsLength);
 
 		// add new comment
@@ -57,7 +78,7 @@ public class RestoreOnceTest extends NimbleFuncTestCase {
 		executedTests++;
 
 		// check if successfully added new comment
-		int commentsLengthAfterAdd = getComments(ic.get("FTC-1").fields).size();
+		final int commentsLengthAfterAdd = Iterables.size(issueClient.getIssue("FTC-1", pm).getComments());
 		Assert.assertEquals(executedTests, commentsLengthAfterAdd);
 	}
 

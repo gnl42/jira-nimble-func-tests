@@ -24,7 +24,6 @@ import com.atlassian.jira.functest.framework.Navigation;
 import com.atlassian.jira.functest.framework.Parser;
 import com.atlassian.jira.functest.framework.assertions.Assertions;
 import com.atlassian.jira.functest.framework.assertions.TextAssertions;
-import com.atlassian.jira.functest.framework.log.FuncTestLogger;
 import com.atlassian.jira.nimblefunctests.annotation.Annotations;
 import com.atlassian.jira.nimblefunctests.annotation.JiraBuildNumberDependent;
 import com.atlassian.jira.nimblefunctests.annotation.Restore;
@@ -208,6 +207,34 @@ public class NimbleFuncTestCase {
 		}
 	}
 
+	public static class FuncTestLogger {
+
+		Object logger;
+
+		FuncTestLogger(Object logger) {
+			this.logger = logger;
+		}
+
+		@SuppressWarnings("UnusedDeclaration")
+		public void log(Object o) {
+			try {
+				logger.getClass().getMethod("log", Object.class).invoke(logger, o);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		@SuppressWarnings("UnusedDeclaration")
+		public void log(Throwable throwable) {
+			try {
+				logger.getClass().getMethod("log", Throwable.class).invoke(logger, throwable);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+
 	private class FakeFuncTestCase extends FuncTestCase {
 
 		public void setMeUp() {
@@ -223,7 +250,7 @@ public class NimbleFuncTestCase {
 			ftc.assertions = this.assertions;
 			ftc.text = this.text;
 			ftc.parse = this.parse;
-			ftc.log = this.log;
+			ftc.log = new FuncTestLogger(this.log);
 			ftc.locator = this.locator;
 		}
 

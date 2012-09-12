@@ -17,17 +17,38 @@ package it;
 
 import com.atlassian.jira.nimblefunctests.annotation.Restore;
 import com.atlassian.jira.nimblefunctests.framework.NimbleFuncTestCase;
-import com.atlassian.jira.webtests.ztests.bundledplugins2.rest.client.IssueClient;
+import com.atlassian.jira.rest.client.IssueRestClient;
+import com.atlassian.jira.rest.client.NullProgressMonitor;
+import com.atlassian.jira.rest.client.ProgressMonitor;
+import com.atlassian.jira.rest.client.auth.BasicHttpAuthenticationHandler;
+import com.atlassian.jira.rest.client.internal.jersey.JerseyJiraRestClient;
+import com.google.common.collect.Iterables;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static com.atlassian.jira.nimblefunctests.IntegrationTestUtils.getComments;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Testing if JIRA data is restored each test execution when @Restore is used on class.
  */
 @Restore("jira-dump1.xml")
 public class RestoreTest extends NimbleFuncTestCase {
+
+	private final ProgressMonitor pm = new NullProgressMonitor();
+	private JerseyJiraRestClient restClient;
+
+	@Override
+	public void beforeMethod() {
+		super.beforeMethod();
+		try {
+			final URI jiraUri = UriBuilder.fromUri(environmentData.getBaseUrl().toURI()).build();
+			restClient = new JerseyJiraRestClient(jiraUri, new BasicHttpAuthenticationHandler("admin", "admin"));
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	@Test
 	public void firstTest() {
@@ -46,15 +67,15 @@ public class RestoreTest extends NimbleFuncTestCase {
 
 	private void testImpl() {
 		// check if there is no comments
-		IssueClient ic = new IssueClient(environmentData);
-		int commentsLength = getComments(ic.get("FTC-1").fields).size();
+		final IssueRestClient issueClient = restClient.getIssueClient();
+		final int commentsLength = Iterables.size(issueClient.getIssue("FTC-1", pm).getComments());
 		Assert.assertEquals(0, commentsLength);
 
 		// add new comment
 		navigation.issue().addComment("FTC-1", "Comment from test method: " + runningTestMethod.getMethodName());
 
 		// check if successfully added new comment
-		int commentsLengthAfterAdd = getComments(ic.get("FTC-1").fields).size();
+		final int commentsLengthAfterAdd = Iterables.size(issueClient.getIssue("FTC-1", pm).getComments());
 		Assert.assertEquals(1, commentsLengthAfterAdd);
 	}
 

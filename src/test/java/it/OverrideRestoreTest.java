@@ -17,12 +17,18 @@ package it;
 
 import com.atlassian.jira.nimblefunctests.annotation.Restore;
 import com.atlassian.jira.nimblefunctests.framework.NimbleFuncTestCase;
-import com.atlassian.jira.webtests.ztests.bundledplugins2.rest.client.IssueClient;
+import com.atlassian.jira.rest.client.IssueRestClient;
+import com.atlassian.jira.rest.client.NullProgressMonitor;
+import com.atlassian.jira.rest.client.ProgressMonitor;
+import com.atlassian.jira.rest.client.auth.BasicHttpAuthenticationHandler;
+import com.atlassian.jira.rest.client.internal.jersey.JerseyJiraRestClient;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static com.atlassian.jira.nimblefunctests.IntegrationTestUtils.getSummaryFieldValue;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Testing if overriding restore configuration works fine if there is @Restore on method
@@ -30,13 +36,31 @@ import static com.atlassian.jira.nimblefunctests.IntegrationTestUtils.getSummary
  */
 @Restore("jira-dump1.xml")
 public class OverrideRestoreTest extends NimbleFuncTestCase {
-	
+
+    private final ProgressMonitor pm = new NullProgressMonitor();
+    private JerseyJiraRestClient restClient;
+
+    @Override
+    public void beforeMethod()
+    {
+		super.beforeMethod();
+        try
+        {
+            final URI jiraUri = UriBuilder.fromUri(environmentData.getBaseUrl().toURI()).build();
+            restClient = new JerseyJiraRestClient(jiraUri, new BasicHttpAuthenticationHandler("admin", "admin"));
+        }
+        catch (URISyntaxException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
 	@Test
 	public void getIssueTest() {
-		IssueClient ic = new IssueClient(environmentData);
-		Assert.assertEquals("My First Task", getSummaryFieldValue(ic.get("FTC-1").fields));
+        final IssueRestClient issueClient = restClient.getIssueClient();
+        Assert.assertEquals("My First Task", issueClient.getIssue("FTC-1", pm).getSummary());
 		try {
-			ic.get("FTC-1");
+			issueClient.getIssue("FTC-1", pm);
 		}
 		catch (UniformInterfaceException e) {
 			// it's ok, issue doesn't exists
@@ -47,9 +71,9 @@ public class OverrideRestoreTest extends NimbleFuncTestCase {
 	@Restore("jira-dump2.xml")
 	@Test
 	public void getIssueWithOverrideRestoreTest() {
-		IssueClient ic = new IssueClient(environmentData);
-		Assert.assertEquals("My First Task", getSummaryFieldValue(ic.get("FTC-1").fields));
-		Assert.assertEquals("My Second Issue", getSummaryFieldValue(ic.get("FTC-2").fields));
+        final IssueRestClient issueClient = restClient.getIssueClient();
+		Assert.assertEquals("My First Task", issueClient.getIssue("FTC-1", pm).getSummary());
+		Assert.assertEquals("My Second Issue", issueClient.getIssue("FTC-2", pm).getSummary());
 	}
 
 }
