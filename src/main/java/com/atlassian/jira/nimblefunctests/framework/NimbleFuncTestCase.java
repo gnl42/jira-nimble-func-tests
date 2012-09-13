@@ -250,7 +250,12 @@ public class NimbleFuncTestCase {
 			ftc.assertions = this.assertions;
 			ftc.text = this.text;
 			ftc.parse = this.parse;
-			ftc.log = new FuncTestLogger(this.log);
+			try {
+				// type of log field has changed (package refactor) - we need to get this field by name
+				ftc.log = new FuncTestLogger(this.getClass().getField("log").get(this));
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 			ftc.locator = this.locator;
 		}
 
