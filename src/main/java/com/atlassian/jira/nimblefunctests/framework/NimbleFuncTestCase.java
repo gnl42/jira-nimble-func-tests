@@ -39,6 +39,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
@@ -252,7 +253,9 @@ public class NimbleFuncTestCase {
 			ftc.parse = this.parse;
 			try {
 				// type of log field has changed (package refactor) - we need to get this field by name
-				ftc.log = new FuncTestLogger(this.getClass().getField("log").get(this));
+				final Field logField = this.getClass().getSuperclass().getDeclaredField("log");
+				logField.setAccessible(true);
+				ftc.log = new FuncTestLogger(logField.get(this));
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
