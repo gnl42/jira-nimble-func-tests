@@ -162,6 +162,7 @@
 			<groupId>com.atlassian.jira</groupId>
 			<artifactId>jira-rest-java-client</artifactId>
 			<version>0.6-m5</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -171,21 +172,25 @@
 				<groupId>com.sun.jersey.contribs</groupId>
 				<artifactId>jersey-apache-client</artifactId>
 				<version>1.5</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-client</artifactId>
 				<version>1.5</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-json</artifactId>
 				<version>1.5</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.jersey</groupId>
 				<artifactId>jersey-core</artifactId>
 				<version>1.5</version>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
