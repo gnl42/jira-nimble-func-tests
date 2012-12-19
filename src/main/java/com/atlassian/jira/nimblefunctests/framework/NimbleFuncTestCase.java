@@ -28,6 +28,8 @@ import com.atlassian.jira.nimblefunctests.annotation.Annotations;
 import com.atlassian.jira.nimblefunctests.annotation.JiraBuildNumberDependent;
 import com.atlassian.jira.nimblefunctests.annotation.Restore;
 import com.atlassian.jira.nimblefunctests.annotation.RestoreOnce;
+import com.atlassian.jira.testkit.client.Backdoor;
+import com.atlassian.jira.testkit.client.util.TestKitLocalEnvironmentData;
 import com.atlassian.jira.webtests.util.JIRAEnvironmentData;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
@@ -69,6 +71,7 @@ public class NimbleFuncTestCase {
 	// }
 
 	private FakeFuncTestCase fakeFuncTestCase;
+	private Backdoor backdoor;
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -135,7 +138,7 @@ public class NimbleFuncTestCase {
 		if (rc.restoreMode == RestoreConfig.RestoreMode.RESTORE_ALWAYS ||
 				(rc.restoreMode == RestoreConfig.RestoreMode.RESTORE_ONCE && !wasRestorePerformed)) {
 
-			administration.restoreData(rc.restoreFile);
+			backdoor.restoreDataFromResource(rc.restoreFile);
 			wasRestorePerformed = true;
 		}
 	}
@@ -251,6 +254,7 @@ public class NimbleFuncTestCase {
 			ftc.assertions = this.assertions;
 			ftc.text = this.text;
 			ftc.parse = this.parse;
+			ftc.backdoor = new Backdoor(new TestKitLocalEnvironmentData());
 			try {
 				// type of log field has changed (package refactor) - we need to get this field by name
 				final Field logField = this.getClass().getSuperclass().getDeclaredField("log");
