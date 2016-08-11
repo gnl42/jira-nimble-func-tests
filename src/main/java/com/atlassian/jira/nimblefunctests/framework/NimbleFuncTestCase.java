@@ -34,6 +34,7 @@ import com.atlassian.jira.webtests.util.JIRAEnvironmentData;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import net.sourceforge.jwebunit.WebTester;
+import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -151,7 +152,7 @@ public class NimbleFuncTestCase {
 				final Method m = aClass.getMethod(runningTestMethod.getMethodName());
 				final Restore restore = m.getAnnotation(Restore.class);
 				if (restore != null) {
-					return RestoreConfig.restoreAlways(restore.value());
+					return RestoreConfig.restoreAlways(getResourcePath(restore.value()));
 				}
 			} catch (NoSuchMethodException e) {
 				// method with params? not supported for now, ignore
@@ -166,12 +167,20 @@ public class NimbleFuncTestCase {
 				throw new RuntimeException("Both @Restore and @RestoreOnce found on class. Only one should be present.");
 			}
 
-			return RestoreConfig.restoreAlways(restore.value());
+			return RestoreConfig.restoreAlways(getResourcePath(restore.value()));
 		} else if (restoreOnce != null) {
-			return RestoreConfig.restoreOnce(restoreOnce.value());
+			return RestoreConfig.restoreOnce(getResourcePath(restoreOnce.value()));
 		} else {
 			return RestoreConfig.doNotRestore();
 		}
+	}
+
+	private String getResourcePath(final String fileName) {
+		final String testDataLocation = System.getProperty("test.data.location");
+		if (StringUtils.isNotBlank(testDataLocation)) {
+			return testDataLocation + "/" + fileName;
+		}
+		return fileName;
 	}
 
 	public static class RestoreConfig {
