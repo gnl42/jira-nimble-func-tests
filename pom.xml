@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.atlassian.jira</groupId>
 	<artifactId>jira-nimble-func-tests</artifactId>
-	<version>1.5-SNAPSHOT</version>
+	<version>1.5</version>
 	<packaging>jar</packaging>
 	<name>JIRA Nimble Functional Tests</name>
 	<description>Atlassian JIRA Nimble Functional Tests is functional tests runner for JUnit4.</description>
@@ -28,7 +28,7 @@
 		<connection>scm:git:ssh://git@bitbucket.org/atlassian/jira-nimble-func-tests</connection>
 		<developerConnection>scm:git:ssh://git@bitbucket.org/atlassian/jira-nimble-func-tests</developerConnection>
 		<url>http://bitbucket.org/atlassian/jira-nimble-func-tests</url>
-	  <tag>HEAD</tag>
+	  <tag>jira-nimble-func-tests-1.5</tag>
   </scm>
 	<issueManagement>
 		<system>bitbucket</system>
